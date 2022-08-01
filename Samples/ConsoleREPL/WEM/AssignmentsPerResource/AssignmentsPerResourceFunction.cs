@@ -11,7 +11,7 @@ namespace WEM.AssignmentsPerResource
 {
     public class AssignmentsPerResourceFunction : ReflectionFunction
     {
-        public AssignmentsPerResourceFunction() : base("AssignmentsPerResource", new AssignmentPerResourceRecordType()) { }
+        public AssignmentsPerResourceFunction() : base("AssignmentsPerResource", new AssignmentPerResourceTableType()) { }
 
         public TableValue Execute()
         {

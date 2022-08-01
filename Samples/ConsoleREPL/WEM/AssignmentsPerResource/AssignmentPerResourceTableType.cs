@@ -100,43 +100,5 @@ namespace WEM.AssignmentsPerResource
 	]
 ");
         }
-        internal TableValue ToTableValue()
-        {
-            var innerRecords = new List<AssignmentRecordValue>();
-            var innerRecordType = new AssignmentRecordType();
-            foreach (var innerValues in innerRecordType.values)
-            {
-                innerRecords.Add(new AssignmentRecordValue(FormulaValue.NewRecordFromFields(innerRecordType, innerValues.ToArray())));
-            }
-
-            var recordValues = new List<RecordValue>();
-            var recordType = new AssignmentPerResourceRecordType();
-            var groups = innerRecords.GroupBy(r => (string)r.ResourceName.ToObject()).ToList();
-            foreach (var group in groups)
-            {
-                var innerRecordValues = new List<RecordValue>();
-                FormulaValue maxNumber = null;
-                FormulaValue name = null;
-                foreach (var inner in group)
-                {
-                    var value = inner.RecordValue;
-                    innerRecordValues.Add(value);
-                    maxNumber = inner.ResourceMaxNumberOfAssignments;
-                    name = inner.ResourceName;
-                }
-                var innerTable = FormulaValue.NewTable(innerRecordType, innerRecordValues);
-
-                var wrappingRecord = FormulaValue.NewRecordFromFields(new NamedValue("Value", innerTable));
-
-                var recordvalue = FormulaValue.NewRecordFromFields(recordType,
-                    new NamedValue("ResourceName", name),
-                    new NamedValue("ResourceMaxNumberOfAssignments", maxNumber),
-                    new NamedValue("List", wrappingRecord));
-
-                recordValues.Add(recordvalue);
-            }
-
-            return FormulaValue.NewTable(recordType, recordValues);
-        }
     }
 }
