@@ -5,20 +5,27 @@
 // Licensed under the MIT license
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Microsoft.PowerFx;
 using Microsoft.PowerFx.Types;
+using WEM.Assignments;
+using WEM.AssignmentsPerResource;
+using WEM.AssignmentsPerShift;
 
 namespace PowerFxHostSamples
 {
-    class ConsoleRepl
+    partial class ConsoleRepl
     {
         private static RecalcEngine engine;
 
         static void ResetEngine()
         {                        
             var config = new PowerFxConfig();
+            config.AddFunction(new AssignmentsFunction());
+            config.AddFunction(new AssignmentsPerResourceFunction());
+            config.AddFunction(new AssignmentsPerShiftFunction());
             config.AddFunction(new HelpFunction());
             config.AddFunction(new ResetFunction());
             config.AddFunction(new ExitFunction());
